@@ -1,7 +1,7 @@
 from nicegui import ui
 import global_state
 import utilities
-import admin_components
+import components
 
 
 @ui.page("/login")
@@ -26,4 +26,4 @@ def page():
         global_state.set_logged_in(True)
         utilities.redirect("/")
         # we need this since "simply" redirecting does not show the buttons as expected
-        admin_components.buttons.refresh()
+        components.admin_buttons.refresh()
