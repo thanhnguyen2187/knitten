@@ -32,6 +32,15 @@ def get_products():
     return dict_["products"][begin:end]
 
 
+def get_product(id_: str) -> dict:
+    product = next(
+        product
+        for product in dict_["products"]
+        if product["id"] == id_
+    )
+    return product
+
+
 def calculate_max_page():
     return math.ceil(len(dict_["products"]) / dict_["page_size"])
 
