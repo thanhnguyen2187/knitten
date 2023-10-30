@@ -19,8 +19,26 @@ def page(id_: str):
 
     def handle_delete_product():
         global_state.delete_product(id_=id_)
-        components.update_product_gallery()
-        components.update_product_pagination()
+        global_state.refresh_products()
+
+        # Ensure that the current page does not become invalid after we remove
+        # one product.
+        #
+        # For example:
+        # - Our page size is 6, and
+        # - There is precisely 13 products, then
+        # - We are going to have 3 pages.
+        # - Removing one product means the maximal page number becomes 2.
+        #
+        # If the current page number is 3, then we are going to have invalid
+        # state on clicking "Back".
+        #
+        max_page = global_state.calculate_max_page()
+        if global_state.get_page() >= max_page:
+            global_state.set_page(max_page)
+
+        components.product_pagination.refresh()
+        components.product_gallery.refresh()
         ui.open(target="/")
 
     with ui.dialog() as dialog, ui.card():
@@ -35,23 +53,16 @@ def page(id_: str):
                 lambda _: dialog.close()
             )
 
-    with ui.row():
-        ui.button(text="Edit Product").bind_visibility_from(
-            target_object=global_state.dict_,
-            target_name="logged_in_user",
-            backward=lambda value: value is not None,
-        ).on(
+    with ui.row().bind_visibility_from(
+        target_object=global_state.dict_,
+        target_name="logged_in_user",
+        backward=lambda value: value is not None,
+    ):
+        ui.button(text="Edit Product").on(
             "click",
-            lambda _: ui.open(target=f"/edit-product/{id_}")
+            lambda _: ui.open(target=f"/edit-product/{id_}"),
         )
-        ui.button(
-            text="Delete Product",
-            color="deep-orange",
-        ).bind_visibility_from(
-            target_object=global_state.dict_,
-            target_name="logged_in_user",
-            backward=lambda value: value is not None,
-        ).on(
+        ui.button(text="Delete Product", color="deep-orange").on(
             "click",
             lambda _: dialog.open(),
         )

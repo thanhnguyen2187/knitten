@@ -69,6 +69,10 @@ def set_page(value: int):
     dict_["page"] = value
 
 
+def get_page() -> int:
+    return dict_["page"]
+
+
 def update_users():
     users = persistence.get_all_users()
     dict_["users"] = users

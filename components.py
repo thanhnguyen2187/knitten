@@ -23,8 +23,10 @@ def admin_buttons():
 
 
 def handle_change_search():
-    update_product_gallery()
-    update_product_pagination()
+    global_state.refresh_products()
+    global_state.set_page(1)
+    product_pagination.refresh()
+    product_gallery.refresh()
 
 
 @ui.refreshable
@@ -133,13 +135,3 @@ def footer():
                 "click",
                 lambda e: handle_log_out()
             )
-
-
-def update_product_gallery():
-    global_state.refresh_products()
-    product_gallery.refresh()
-
-
-def update_product_pagination():
-    global_state.set_page(1)
-    product_pagination.refresh()

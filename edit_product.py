@@ -21,14 +21,20 @@ def page(id_: str):
 
     def handle_edit_product():
         global_state.update_product(product_record=product_record)
-        components.update_product_gallery()
-        components.update_product_pagination()
+        global_state.refresh_products()
+        components.product_gallery.refresh()
         ui.open(target=f"/product/{product_record['id']}")
 
     def handle_create_product():
         global_state.create_product(product_record=product_record)
-        components.update_product_gallery()
-        components.update_product_pagination()
+        global_state.refresh_products()
+
+        # A small UX improvement where we always navigate to the latest page
+        # that contains the newly-created product.
+        global_state.set_page(global_state.calculate_max_page())
+
+        components.product_pagination.refresh()
+        components.product_gallery.refresh()
         ui.open(target=f"/product/{product_record['id']}")
 
     with ui.row():
@@ -64,6 +70,4 @@ def page(id_: str):
             type="click",
             handler=lambda _: handle_edit_product()
         )
-    # TODO: fix a bug where clicking "Back" in here and "Back" in the product
-    #       page leads to inconsistent state
     ui.link(text="Back", target=f"/product/{id_}")
