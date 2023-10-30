@@ -1,3 +1,4 @@
+import typing
 import math
 
 import persistence
@@ -5,6 +6,7 @@ import persistence
 
 dict_ = {
     "logged_in": False,
+    "logged_in_user": None,
     "products": [],
     "users": [],
     "search_input": "",
@@ -13,8 +15,8 @@ dict_ = {
 }
 
 
-def set_logged_in(value: bool):
-    dict_["logged_in"] = value
+def set_logged_in_user(record: dict):
+    dict_["logged_in_user"] = record
 
 
 def update_products():
@@ -55,14 +57,14 @@ def update_users():
     dict_["users"] = users
 
 
-def user_exist(
+def find_user(
     username: str,
     password: str,
-) -> bool:
+) -> typing.Optional[dict]:
     for user_record in dict_["users"]:
         if (
             user_record["username"] == username and
             user_record["password"] == password
         ):
-            return True
-    return False
+            return user_record
+    return None

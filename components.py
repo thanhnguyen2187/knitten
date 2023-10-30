@@ -1,17 +1,34 @@
+import typing
 from nicegui import ui
 import global_state
-import product
-import typing
+import login
 
 
 @ui.refreshable
 def admin_buttons():
     with ui.row().classes(add="justify-between").bind_visibility_from(
         target_object=global_state.dict_,
-        target_name="logged_in",
+        target_name="logged_in_user",
+        backward=lambda value: value is not None,
     ):
         ui.button(text="Add new product")
         ui.button(text="Edit materials")
+
+
+def handle_change_search():
+    update_product_gallery()
+    update_product_pagination()
+
+
+@ui.refreshable
+def search_bar():
+    ui.input(label="Search for product...").bind_value_to(
+        target_object=global_state.dict_,
+        target_name="search_input",
+    ).on(
+        "change",
+        lambda e: handle_change_search(),
+    )
 
 
 @ui.refreshable
@@ -93,8 +110,30 @@ def product_pagination():
         )
 
 
+def handle_log_out():
+    global_state.dict_["logged_in_user"] = None
+    footer.refresh()
+
+
+@ui.refreshable
+def footer():
+    user_record = global_state.dict_["logged_in_user"]
+    if user_record is None:
+        ui.link(text="Login", target=login.page)
+    else:
+        with ui.row():
+            ui.label(text=f"Hello {user_record['full_name']}!")
+            ui.link(text="Logout").on(
+                "click",
+                lambda e: handle_log_out()
+            )
+
+
 def update_product_gallery():
     global_state.update_products()
     product_gallery.refresh()
+
+
+def update_product_pagination():
     global_state.set_page(1)
     product_pagination.refresh()
