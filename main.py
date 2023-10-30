@@ -24,7 +24,7 @@ ui.label(text="Knitten 🐱 - Yarn Knitting Management").classes(add="text-xl")
 components.admin_buttons()
 components.product_gallery()
 
-ui.button("Show more")
+components.product_pagination()
 
 with ui.row():
     ui.link(text="Login", target=login.page)
