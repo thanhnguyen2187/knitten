@@ -16,6 +16,7 @@ def page(id_: str):
 
     ui.button("Edit Product").bind_visibility_from(
         target_object=global_state.dict_,
-        target_name="logged_in",
+        target_name="logged_in_user",
+        backward=lambda value: value is not None,
     )
     ui.link(text="Back", target="/")

@@ -2,6 +2,7 @@ import typing
 from nicegui import ui
 import global_state
 import login
+import product  # import for side effect
 
 
 @ui.refreshable
