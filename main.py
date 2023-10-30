@@ -1,6 +1,5 @@
 from nicegui import ui
 import login
-import sign_up
 import components
 import global_state
 
@@ -24,11 +23,8 @@ ui.label(text="Knitten 🐱 - Yarn Knitting Management").classes(add="text-xl")
 
 components.admin_buttons()
 components.product_gallery()
-
 components.product_pagination()
 
-with ui.row():
-    ui.link(text="Login", target=login.page)
-    ui.link(text="Sign up", target=sign_up.page)
+ui.link(text="Login", target=login.page)
 
 ui.run(title="Knitten", favicon="🐱", dark=True)
