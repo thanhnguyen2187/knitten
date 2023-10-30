@@ -5,8 +5,13 @@ import persistence
 
 
 dict_ = {
-    "logged_in": False,
-    "logged_in_user": None,
+    "logged_in_user": {
+        "id": "",
+        "username": "thanh",
+        "password": "thanh",
+        "full_name": "Thanh",
+    },
+    # "logged_in_user": None,
     "products": [],
     "users": [],
     "search_input": "",
@@ -19,7 +24,7 @@ def set_logged_in_user(record: dict):
     dict_["logged_in_user"] = record
 
 
-def update_products():
+def refresh_products():
     products = persistence.get_all_products()
     products = [
         product
@@ -46,6 +51,10 @@ def get_product(id_: str) -> dict:
 
 def delete_product(id_: str):
     persistence.delete_product(id_=id_)
+
+
+def update_product(product_record: dict):
+    persistence.update_product(product_record=product_record)
 
 
 def calculate_max_page():

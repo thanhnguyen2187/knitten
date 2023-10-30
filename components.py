@@ -2,7 +2,10 @@ import typing
 from nicegui import ui
 import global_state
 import login
-import product  # import for side effect
+
+# import for side effect
+import product
+import edit_product
 
 
 @ui.refreshable
@@ -130,7 +133,7 @@ def footer():
 
 
 def update_product_gallery():
-    global_state.update_products()
+    global_state.refresh_products()
     product_gallery.refresh()
 
 

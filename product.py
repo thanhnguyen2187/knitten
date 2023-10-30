@@ -15,6 +15,7 @@ def page(id_: str):
             ui.label(text="Description").classes(add="text-lg")
             ui.markdown(content=product["description"])
             ui.label(text="Patterns").classes(add="text-lg")
+            ui.markdown(content=product["patterns"])
 
     def handle_delete_product():
         global_state.delete_product(id_=id_)
@@ -39,6 +40,9 @@ def page(id_: str):
             target_object=global_state.dict_,
             target_name="logged_in_user",
             backward=lambda value: value is not None,
+        ).on(
+            "click",
+            lambda _: ui.open(target=f"/edit-product/{id_}")
         )
         ui.button(
             text="Delete Product",

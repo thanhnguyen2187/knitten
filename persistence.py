@@ -25,6 +25,26 @@ def delete_product(id_: str, connection=connection):
         connection.execute("DELETE FROM products WHERE id = ?", (id_,))
 
 
+def update_product(product_record: dict, connection=connection):
+    with connection:
+        connection.execute(
+            """UPDATE products SET
+                name = ?,
+                description = ?,
+                patterns = ?,
+                image_url = ?
+            WHERE id = ?
+            """,
+            (
+                product_record["name"],
+                product_record["description"],
+                product_record["patterns"],
+                product_record["image_url"],
+                product_record["id"],
+            )
+        )
+
+
 def get_all_users(connection=connection):
     cursor = connection.cursor()
     result = cursor.execute("SELECT * FROM users")
