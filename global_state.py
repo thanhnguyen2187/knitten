@@ -57,6 +57,10 @@ def update_product(product_record: dict):
     persistence.update_product(product_record=product_record)
 
 
+def create_product(product_record: dict):
+    persistence.insert_product(product_record=product_record)
+
+
 def calculate_max_page():
     return math.ceil(len(dict_["products"]) / dict_["page_size"])
 

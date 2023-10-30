@@ -15,7 +15,10 @@ def admin_buttons():
         target_name="logged_in_user",
         backward=lambda value: value is not None,
     ):
-        ui.button(text="Add new product")
+        ui.button(text="Add new product").on(
+            "click",
+            lambda _: ui.open("/edit-product/new"),
+        )
         ui.button(text="Edit materials")
 
 
