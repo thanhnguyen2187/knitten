@@ -20,6 +20,11 @@ def get_all_products(connection=connection):
     return records
 
 
+def delete_product(id_: str, connection=connection):
+    with connection:
+        connection.execute("DELETE FROM products WHERE id = ?", (id_,))
+
+
 def get_all_users(connection=connection):
     cursor = connection.cursor()
     result = cursor.execute("SELECT * FROM users")

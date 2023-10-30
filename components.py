@@ -43,7 +43,6 @@ def product_gallery():
                         text=product_record["name"],
                         target="/product/" + product_record["id"],
                     )
-                    ui.label(text=product_record["description"])
 
 
 def handle_change_page(

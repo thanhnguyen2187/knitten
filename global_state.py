@@ -44,6 +44,10 @@ def get_product(id_: str) -> dict:
     return product
 
 
+def delete_product(id_: str):
+    persistence.delete_product(id_=id_)
+
+
 def calculate_max_page():
     return math.ceil(len(dict_["products"]) / dict_["page_size"])
 
