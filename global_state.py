@@ -6,6 +6,7 @@ import persistence
 dict_ = {
     "logged_in": False,
     "products": [],
+    "users": [],
     "search_input": "",
     "page": 1,
     "page_size": 6,
@@ -47,3 +48,21 @@ def calculate_max_page():
 
 def set_page(value: int):
     dict_["page"] = value
+
+
+def update_users():
+    users = persistence.get_all_users()
+    dict_["users"] = users
+
+
+def user_exist(
+    username: str,
+    password: str,
+) -> bool:
+    for user_record in dict_["users"]:
+        if (
+            user_record["username"] == username and
+            user_record["password"] == password
+        ):
+            return True
+    return False

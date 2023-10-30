@@ -18,3 +18,19 @@ def get_all_products(connection=connection):
         for raw_record in raw_records
     ]
     return records
+
+
+def get_all_users(connection=connection):
+    cursor = connection.cursor()
+    result = cursor.execute("SELECT * FROM users")
+    raw_records = result.fetchall()
+    records = [
+        {
+            "id": raw_record[0],
+            "username": raw_record[1],
+            "full_name": raw_record[2],
+            "password": raw_record[3],
+        }
+        for raw_record in raw_records
+    ]
+    return records

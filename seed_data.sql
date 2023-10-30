@@ -11,3 +11,5 @@ INSERT INTO products VALUES ('1f1e60ee-fbce-4d92-87a5-d7c14132a005', 'Product Na
 INSERT INTO products VALUES ('c1db516a-7e5f-4a36-9c71-305fa0cf2ba7', 'Product Name 11', 'Product Description 11', 'Patterns 11', 'https://http.cat/images/206.jpg');
 INSERT INTO products VALUES ('ed3d5f52-35ca-4c41-adbc-6fc26f99e248', 'Product Name 12', 'Product Description 12', 'Patterns 12', 'https://http.cat/images/207.jpg');
 INSERT INTO products VALUES ('2cf3f3c2-21db-4926-ad25-16cebca9f3bd', 'Product Name 13', 'Product Description 13', 'Patterns 13', 'https://http.cat/images/300.jpg');
+
+INSERT INTO users VALUES ('fa39c270-4a9e-47de-bcef-1d137c201e3b', 'knitten', 'Knitten Admin', 'knitten');
