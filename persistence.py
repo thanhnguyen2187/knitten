@@ -73,3 +73,57 @@ def get_all_users(connection=connection):
         for raw_record in raw_records
     ]
     return records
+
+
+def get_all_yarns(connection=connection):
+    cursor = connection.cursor()
+    result = cursor.execute("SELECT * FROM yarns")
+    raw_records = result.fetchall()
+    records = [
+        {
+            "id": raw_record[0],
+            "name": raw_record[1],
+            "color": raw_record[2],
+            "price_per_unit": raw_record[3],
+        }
+        for raw_record in raw_records
+    ]
+    return records
+
+
+def insert_yarn(yarn_record: dict, connection=connection):
+    with connection:
+        connection.execute(
+            """INSERT INTO yarns VALUES (?, ?, ?, ?)""",
+            (
+                yarn_record["id"],
+                yarn_record["name"],
+                yarn_record["color"],
+                yarn_record["price_per_unit"],
+            )
+        )
+
+
+def update_yarn(yarn_record: dict, connection=connection):
+    with connection:
+        connection.execute(
+            """UPDATE yarns SET
+                name = ?,
+                color = ?,
+                price_per_unit = ?
+            WHERE id = ?
+            """,
+            (
+                yarn_record["name"],
+                yarn_record["color"],
+                yarn_record["price_per_unit"],
+                yarn_record["id"],
+            )
+        )
+
+
+def delete_yarn(id_: str, connection=connection):
+    with connection:
+        connection.execute("DELETE FROM yarns WHERE id = ?", (id_,))
+
+

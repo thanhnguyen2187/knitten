@@ -1,9 +1,9 @@
 from nicegui import ui
-import login
 import components
 import global_state
 
 global_state.refresh_products()
+global_state.refresh_yarns()
 global_state.update_users()
 
 ui.label(text="Knitten 🐱 - Yarn Knitting Management").classes(add="text-xl")

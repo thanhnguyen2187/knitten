@@ -2,6 +2,7 @@ import typing
 from nicegui import ui
 import global_state
 import login
+import yarns
 
 # import for side effect
 import product
@@ -17,9 +18,12 @@ def admin_buttons():
     ):
         ui.button(text="Add new product").on(
             "click",
-            lambda _: ui.open("/edit-product/new"),
+            lambda _: ui.open(target="/edit-product/new"),
         )
-        ui.button(text="Edit materials")
+        ui.button(text="Edit materials").on(
+            "click",
+            lambda _: ui.open(target=yarns.page)
+        )
 
 
 def handle_change_search():

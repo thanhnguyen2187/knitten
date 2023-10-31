@@ -14,6 +14,7 @@ dict_ = {
     # "logged_in_user": None,
     "products": [],
     "users": [],
+    "yarns": [],
     "search_input": "",
     "page": 1,
     "page_size": 6,
@@ -34,10 +35,19 @@ def refresh_products():
     dict_["products"] = products
 
 
+def refresh_yarns():
+    yarns = persistence.get_all_yarns()
+    dict_["yarns"] = yarns
+
+
 def get_products():
     begin = (dict_["page"] - 1) * (dict_["page_size"])
     end = dict_["page"] * dict_["page_size"]
     return dict_["products"][begin:end]
+
+
+def get_yarns():
+    return dict_["yarns"]
 
 
 def get_product(id_: str) -> dict:
