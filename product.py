@@ -1,17 +1,54 @@
 from nicegui import ui
 import components
 import global_state
+import persistence
+
+
+def requirement_list(requirements: list):
+    total = total_price(requirements=requirements)
+    sum_unit = total_unit(requirements=requirements)
+    with ui.grid(columns=6):
+        for yarn_record in requirements:
+            ui.label(text=yarn_record["name"])
+            ui.button(color=yarn_record["color"])
+            ui.label(text=yarn_record["price_per_unit"])
+            ui.label(text="VND")
+            ui.label(text="x")
+            ui.label(text=yarn_record["count"])
+
+        ui.label(text="Total").classes(add="text-lg")
+        ui.element()
+        ui.label(text=str(total)).classes(add="text-lg")
+        ui.label(text="VND").classes(add="text-lg")
+        ui.label(text="-")
+        ui.label(text=str(sum_unit)).classes(add="text-lg")
+
+
+def total_price(requirements: list):
+    result = 0
+    for requirement in requirements:
+        result += requirement["price_per_unit"] * requirement["count"]
+    return result
+
+
+def total_unit(requirements: list):
+    result = 0
+    for requirement in requirements:
+        result += requirement["count"]
+    return result
+
 
 
 @ui.page("/product/{id_}")
 def page(id_: str):
     product = global_state.get_product(id_=id_)
-    ui.label(text=product["name"]).classes(add="text-xl")
+    ui.label(text=product["name"]).classes(add="text-2xl")
     with ui.row():
         ui.image(source=product["image_url"]).style(add="width: 400px")
         with ui.column():
             ui.label(text="Materials").classes(add="text-lg")
-            ui.label(text="Price").classes(add="text-lg")
+            requirements = persistence.get_product_yarns(product_id=id_)
+            requirement_list(requirements=requirements)
             ui.label(text="Description").classes(add="text-lg")
             ui.markdown(content=product["description"])
             ui.label(text="Patterns").classes(add="text-lg")

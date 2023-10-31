@@ -127,3 +127,27 @@ def delete_yarn(id_: str, connection=connection):
         connection.execute("DELETE FROM yarns WHERE id = ?", (id_,))
 
 
+def get_product_yarns(product_id: str):
+    with connection:
+        raw_records = connection.execute(
+            """
+            SELECT y.*, py.yarn_count FROM yarns y
+            JOIN product__yarn py
+            ON py.yarn_id = y.id
+            AND py.product_id = ?
+            """,
+            (product_id,)
+        ).fetchall()
+        records = [
+            {
+                "id": raw_record[0],
+                "name": raw_record[1],
+                "color": raw_record[2],
+                "price_per_unit": raw_record[3],
+                "count": raw_record[4],
+            }
+            for raw_record in raw_records
+        ]
+        return records
+
+

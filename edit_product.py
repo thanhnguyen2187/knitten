@@ -65,9 +65,11 @@ def page(id_: str):
             type="click",
             handler=lambda _: handle_create_product()
         )
+        ui.link(text="Back", target="/")
     else:
         ui.button(text="Save").on(
             type="click",
             handler=lambda _: handle_edit_product()
         )
-    ui.link(text="Back", target=f"/product/{id_}")
+        ui.link(text="Back", target=f"/product/{id_}")
+
