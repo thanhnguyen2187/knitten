@@ -3,11 +3,63 @@ import uuid
 from nicegui import ui
 import global_state
 import components
+import persistence
+
+
+def yarn_row(
+    yarn_options: dict,
+    product_yarn_record: dict,
+    yarn_map: dict,
+):
+    ui.select(
+        options=yarn_options,
+        value=product_yarn_record["yarn_id"],
+        on_change=lambda e: handle_select_change(e.value)
+    )
+    color_button = ui.button(color=product_yarn_record["yarn_color"])
+
+    def handle_select_change(yarn_id: str):
+        color_button.style(add=f"background-color: {yarn_map[yarn_id]['color']}!important")
+        product_yarn_record["yarn_id"] = yarn_id
+        product_yarn_record["yarn_price_per_unit"] = yarn_map[yarn_id]["price_per_unit"]
+
+    with ui.row():
+        ui.label(text=product_yarn_record["yarn_price_per_unit"])
+        ui.label(text="VND")
+
+    ui.number(
+        label="Count",
+        min=1,
+        format="%d",
+    ).classes(add="w-12").bind_value(
+        target_object=product_yarn_record,
+        target_name="yarn_count",
+    )
+
+    def handle_click_save():
+        persistence.update_product_yarn(record=product_yarn_record)
+        ui.notify(message="Updated record successfully.", position="top-right")
+
+    def handle_click_delete():
+        persistence.delete_product_yarn(id_=product_yarn_record["id"])
+        ui.notify(message="Deleted record successfully.", position="top-right")
+        yarn_list.refresh()
+
+    with ui.row():
+        ui.button(icon="save").on(
+            type="click",
+            handler=lambda _: handle_click_save()
+        )
+        ui.button(icon="delete", color="deep-orange").on(
+            type="click",
+            handler=lambda _: handle_click_delete()
+        )
 
 
 @ui.refreshable
-def yarn_list():
+def yarn_list(product_id: str):
     yarn_records = global_state.get_yarns()
+    products_yarns = persistence.get_product_yarns(product_id=product_id)
     yarn_map = {
         record["id"]: record
         for record in yarn_records
@@ -16,60 +68,40 @@ def yarn_list():
         record["id"]: record["name"]
         for record in yarn_records
     }
-    yarn_colors = {
-        record["id"]: record["color"]
-        for record in yarn_records
-    }
     ui.label(text="Materials").classes(add="text-lg")
 
-    state = {}
+    def handle_click_add():
+        persistence.insert_product_yarn(
+            record={
+                "id": str(uuid.uuid4()),
+                "product_id": product_id,
+                "yarn_id": yarn_records[0]["id"],
+                "yarn_count": 1,
+            },
+        )
+        ui.notify(
+            message="Created record successfully.",
+            position="top-right",
+        )
+        yarn_list.refresh()
+
     with ui.grid(columns=5):
-        ui.select(
-            options=yarn_options,
-            value=yarn_records[0]["id"],
-            on_change=lambda e: color_button.style(add=f"background-color: {yarn_colors[e.value]}!important")
-        ).bind_value(
-            target_object=state,
-            target_name="yarn_id",
-        )
-        color_button = ui.button(color="red")
-        with ui.row():
-            ui.label(text="20000")
-            ui.label(text="VND")
-        ui.number(
-            label="Count",
-            min=1,
-            format="%d",
-            value=1,
-        ).classes(add="w-12")
-        with ui.row():
-            ui.button(icon="save")
-            ui.button(icon="delete")
-
-        ui.select(
-            options=["red", "green", "blue"],
-            value="green",
-        )
-        ui.button(color="green")
-        with ui.row():
-            ui.label(text="20000")
-            ui.label(text="VND")
-        ui.number(
-            label="Count",
-            min=1,
-            format="%d",
-            value=1,
-        ).classes(add="w-12")
-        with ui.row():
-            ui.button(icon="save")
-            ui.button(icon="delete")
+        for products_yarn in products_yarns:
+            yarn_row(
+                yarn_options=yarn_options,
+                product_yarn_record=products_yarn,
+                yarn_map=yarn_map,
+            )
 
         ui.element()
         ui.element()
         ui.element()
         ui.element()
         with ui.row():
-            ui.button(icon="add")
+            ui.button(icon="add").on(
+                "click",
+                lambda _: handle_click_add()
+            )
 
 
 
@@ -128,7 +160,7 @@ def page(id_: str):
                 target_name="patterns",
             ).style(add="width: 240px")
         with ui.column():
-            yarn_list()
+            yarn_list(product_record["id"])
 
     if id_ == "new":
         ui.button(text="Create").on(

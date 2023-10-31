@@ -4,18 +4,18 @@ import global_state
 import persistence
 
 
-def requirement_list(requirements: list):
-    total = total_price(requirements=requirements)
-    sum_unit = total_unit(requirements=requirements)
+def requirement_list(product_yarn_records: list):
+    total = total_price(product_yarn_records=product_yarn_records)
+    sum_unit = total_unit(product_yarn_records=product_yarn_records)
     with ui.grid(columns=7):
-        for yarn_record in requirements:
-            ui.label(text=yarn_record["name"])
-            ui.button(color=yarn_record["color"])
-            ui.label(text=yarn_record["price_per_unit"])
+        for product_yarn_record in product_yarn_records:
+            ui.label(text=product_yarn_record["yarn_name"])
+            ui.button(color=product_yarn_record["yarn_color"])
+            ui.label(text=product_yarn_record["yarn_price_per_unit"])
             ui.label(text="VND")
             ui.label(text="x")
-            ui.label(text=yarn_record["count"])
-            if yarn_record["count"] == 1:
+            ui.label(text=product_yarn_record["yarn_count"])
+            if product_yarn_record["yarn_count"] == 1:
                 ui.label("ball")
             else:
                 ui.label("balls")
@@ -32,17 +32,17 @@ def requirement_list(requirements: list):
             ui.label("balls").classes(add="text-lg")
 
 
-def total_price(requirements: list):
+def total_price(product_yarn_records: list):
     result = 0
-    for requirement in requirements:
-        result += requirement["price_per_unit"] * requirement["count"]
+    for requirement in product_yarn_records:
+        result += requirement["yarn_price_per_unit"] * requirement["yarn_count"]
     return result
 
 
-def total_unit(requirements: list):
+def total_unit(product_yarn_records: list):
     result = 0
-    for requirement in requirements:
-        result += requirement["count"]
+    for requirement in product_yarn_records:
+        result += requirement["yarn_count"]
     return result
 
 
@@ -54,8 +54,8 @@ def page(id_: str):
         ui.image(source=product["image_url"]).style(add="width: 400px")
         with ui.column():
             ui.label(text="Materials").classes(add="text-lg")
-            requirements = persistence.get_product_yarns(product_id=id_)
-            requirement_list(requirements=requirements)
+            product_yarn_records = persistence.get_product_yarns(product_id=id_)
+            requirement_list(product_yarn_records=product_yarn_records)
             ui.label(text="Description").classes(add="text-lg")
             ui.markdown(content=product["description"])
             ui.label(text="Patterns").classes(add="text-lg")

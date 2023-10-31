@@ -19,7 +19,7 @@ INSERT INTO yarns VALUES ('ff2ef7d7-cf36-46b9-9b55-30a1daa2c599', 'White milk ya
 INSERT INTO yarns VALUES ('59f974cc-d648-46ec-88ef-6573f708d462', 'Yellow milk yarn', '#e5eb49', 20000);
 INSERT INTO yarns VALUES ('a9345779-d247-4d2b-a76b-bee29a9fcd3d', 'Red milk yarn', '#d62f2f', 20000);
 
-INSERT INTO product__yarn VALUES ('2cf3f3c2-21db-4926-ad25-16cebca9f3bd', '5899b9d5-1d50-4530-9fb1-3943c69b07ba', 1);
-INSERT INTO product__yarn VALUES ('2cf3f3c2-21db-4926-ad25-16cebca9f3bd', 'ff2ef7d7-cf36-46b9-9b55-30a1daa2c599', 2);
-INSERT INTO product__yarn VALUES ('2cf3f3c2-21db-4926-ad25-16cebca9f3bd', '59f974cc-d648-46ec-88ef-6573f708d462', 1);
+INSERT INTO product__yarn VALUES ('4e56fc98-1825-481a-a18f-1443a4d561a4', '2cf3f3c2-21db-4926-ad25-16cebca9f3bd', '5899b9d5-1d50-4530-9fb1-3943c69b07ba', 1);
+INSERT INTO product__yarn VALUES ('4d4358c8-e86a-4aa4-965d-6a61763af7a2', '2cf3f3c2-21db-4926-ad25-16cebca9f3bd', 'ff2ef7d7-cf36-46b9-9b55-30a1daa2c599', 2);
+INSERT INTO product__yarn VALUES ('fd7d2e62-c90a-420e-9d3a-33a531765b97', '2cf3f3c2-21db-4926-ad25-16cebca9f3bd', '59f974cc-d648-46ec-88ef-6573f708d462', 1);
 

@@ -131,7 +131,7 @@ def get_product_yarns(product_id: str):
     with connection:
         raw_records = connection.execute(
             """
-            SELECT y.*, py.yarn_count FROM yarns y
+            SELECT y.*, py.yarn_count, py.product_id, py.id FROM yarns y
             JOIN product__yarn py
             ON py.yarn_id = y.id
             AND py.product_id = ?
@@ -140,14 +140,51 @@ def get_product_yarns(product_id: str):
         ).fetchall()
         records = [
             {
-                "id": raw_record[0],
-                "name": raw_record[1],
-                "color": raw_record[2],
-                "price_per_unit": raw_record[3],
-                "count": raw_record[4],
+                "yarn_id": raw_record[0],
+                "yarn_name": raw_record[1],
+                "yarn_color": raw_record[2],
+                "yarn_price_per_unit": raw_record[3],
+                "yarn_count": raw_record[4],
+                "product_id": raw_record[5],
+                "id": raw_record[6],
             }
             for raw_record in raw_records
         ]
         return records
 
+
+def update_product_yarn(record: dict, connection=connection):
+    with connection:
+        connection.execute(
+            """
+            UPDATE product__yarn
+            SET yarn_count = ?,
+                product_id = ?,
+                yarn_id = ?
+            WHERE id = ?
+            """,
+            (
+                record["yarn_count"],
+                record["product_id"],
+                record["yarn_id"],
+                record["id"],
+            )
+        )
+
+
+def insert_product_yarn(record: dict, connection=connection):
+    connection.execute(
+        """INSERT INTO product__yarn VALUES (?, ?, ?, ?)""",
+        (
+            record["id"],
+            record["product_id"],
+            record["yarn_id"],
+            record["yarn_count"],
+        )
+    )
+
+
+def delete_product_yarn(id_: str, connection=connection):
+    with connection:
+        connection.execute("DELETE FROM product__yarn WHERE id = ?", (id_,))
 

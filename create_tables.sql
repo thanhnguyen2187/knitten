@@ -21,10 +21,10 @@ CREATE TABLE yarns (
 );
 
 CREATE TABLE product__yarn (
+    id TEXT PRIMARY KEY,
     product_id TEXT NOT NULL,
     yarn_id TEXT NOT NULL,
     yarn_count INTEGER NOT NULL,
-    PRIMARY KEY (yarn_id, product_id),
     FOREIGN KEY (yarn_id) REFERENCES yarns (id),
     FOREIGN KEY (product_id) REFERENCES products (id)
 );
