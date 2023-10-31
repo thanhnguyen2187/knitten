@@ -5,23 +5,75 @@ import global_state
 import components
 
 
+@ui.refreshable
 def yarn_list():
+    yarn_records = global_state.get_yarns()
+    yarn_map = {
+        record["id"]: record
+        for record in yarn_records
+    }
+    yarn_options = {
+        record["id"]: record["name"]
+        for record in yarn_records
+    }
+    yarn_colors = {
+        record["id"]: record["color"]
+        for record in yarn_records
+    }
     ui.label(text="Materials").classes(add="text-lg")
 
-    with ui.grid(columns=4):
-        ui.label(text="")
-        ui.label(text="Color")
-        ui.label(text="Price")
-        ui.label(text="Count")
+    state = {}
+    with ui.grid(columns=5):
+        ui.select(
+            options=yarn_options,
+            value=yarn_records[0]["id"],
+            on_change=lambda e: color_button.style(add=f"background-color: {yarn_colors[e.value]}!important")
+        ).bind_value(
+            target_object=state,
+            target_name="yarn_id",
+        )
+        color_button = ui.button(color="red")
+        with ui.row():
+            ui.label(text="20000")
+            ui.label(text="VND")
+        ui.number(
+            label="Count",
+            min=1,
+            format="%d",
+            value=1,
+        ).classes(add="w-12")
+        with ui.row():
+            ui.button(icon="save")
+            ui.button(icon="delete")
 
         ui.select(
-            options=["red", "greed", "blue"],
-            value="red",
+            options=["red", "green", "blue"],
+            value="green",
         )
-        ui.button(color="red")
+        ui.button(color="green")
+        with ui.row():
+            ui.label(text="20000")
+            ui.label(text="VND")
+        ui.number(
+            label="Count",
+            min=1,
+            format="%d",
+            value=1,
+        ).classes(add="w-12")
+        with ui.row():
+            ui.button(icon="save")
+            ui.button(icon="delete")
+
+        ui.element()
+        ui.element()
+        ui.element()
+        ui.element()
+        with ui.row():
+            ui.button(icon="add")
 
 
-@ui.page("/edit-product/id_")
+
+@ui.page("/edit-product/{id_}")
 def page(id_: str):
     product_record = {}
     if id_ == "new":

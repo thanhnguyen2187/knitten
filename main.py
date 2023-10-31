@@ -3,7 +3,7 @@ import global_state
 
 # import for side effect
 import home
-# import product
+import product
 import edit_product
 
 global_state.refresh_products()
