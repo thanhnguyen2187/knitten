@@ -7,7 +7,7 @@ import persistence
 def requirement_list(requirements: list):
     total = total_price(requirements=requirements)
     sum_unit = total_unit(requirements=requirements)
-    with ui.grid(columns=6):
+    with ui.grid(columns=7):
         for yarn_record in requirements:
             ui.label(text=yarn_record["name"])
             ui.button(color=yarn_record["color"])
@@ -15,13 +15,21 @@ def requirement_list(requirements: list):
             ui.label(text="VND")
             ui.label(text="x")
             ui.label(text=yarn_record["count"])
+            if yarn_record["count"] == 1:
+                ui.label("ball")
+            else:
+                ui.label("balls")
 
         ui.label(text="Total").classes(add="text-lg")
         ui.element()
         ui.label(text=str(total)).classes(add="text-lg")
         ui.label(text="VND").classes(add="text-lg")
-        ui.label(text="-")
+        ui.label(text=" ")
         ui.label(text=str(sum_unit)).classes(add="text-lg")
+        if sum_unit == 1:
+            ui.label("ball").classes(add="text-lg")
+        else:
+            ui.label("balls").classes(add="text-lg")
 
 
 def total_price(requirements: list):
@@ -36,7 +44,6 @@ def total_unit(requirements: list):
     for requirement in requirements:
         result += requirement["count"]
     return result
-
 
 
 @ui.page("/product/{id_}")

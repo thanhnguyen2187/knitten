@@ -4,10 +4,6 @@ import global_state
 import login
 import yarns
 
-# import for side effect
-import product
-import edit_product
-
 
 @ui.refreshable
 def admin_buttons():

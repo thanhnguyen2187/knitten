@@ -5,7 +5,23 @@ import global_state
 import components
 
 
-@ui.page("/edit-product/{id_}")
+def yarn_list():
+    ui.label(text="Materials").classes(add="text-lg")
+
+    with ui.grid(columns=4):
+        ui.label(text="")
+        ui.label(text="Color")
+        ui.label(text="Price")
+        ui.label(text="Count")
+
+        ui.select(
+            options=["red", "greed", "blue"],
+            value="red",
+        )
+        ui.button(color="red")
+
+
+@ui.page("/edit-product/id_")
 def page(id_: str):
     product_record = {}
     if id_ == "new":
@@ -59,6 +75,8 @@ def page(id_: str):
                 target_object=product_record,
                 target_name="patterns",
             ).style(add="width: 240px")
+        with ui.column():
+            yarn_list()
 
     if id_ == "new":
         ui.button(text="Create").on(
