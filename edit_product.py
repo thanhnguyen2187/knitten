@@ -24,7 +24,10 @@ def yarn_row(
         product_yarn_record["yarn_price_per_unit"] = yarn_map[yarn_id]["price_per_unit"]
 
     with ui.row():
-        ui.label(text=product_yarn_record["yarn_price_per_unit"])
+        ui.label().bind_text(
+            target_object=product_yarn_record,
+            target_name="yarn_price_per_unit",
+        )
         ui.label(text="VND")
 
     ui.number(
