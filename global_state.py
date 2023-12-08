@@ -5,13 +5,7 @@ import persistence
 
 
 dict_ = {
-    "logged_in_user": {
-        "id": "",
-        "username": "thanh",
-        "password": "thanh",
-        "full_name": "Thanh",
-    },
-    # "logged_in_user": None,
+    "logged_in_user": None,
     "products": [],
     "users": [],
     "yarns": [],
