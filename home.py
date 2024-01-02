@@ -12,7 +12,7 @@ def f():
 @ui.page("/")
 def page():
     if not global_state.dict_["logged_in_user"]:
-        return RedirectResponse('/sign-up')
+        return RedirectResponse('/login')
 
     ui.label(text="Knitten 🐱 - Yarn Knitting Management").classes(add="text-xl")
 

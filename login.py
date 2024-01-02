@@ -10,7 +10,8 @@ def page():
     input_password = ui.input(label="Password", password=True, password_toggle_button=True)
 
     ui.button(text="Login").on("click", lambda e: handle_login_click())
-    ui.link(text="Back", target="/")
+    with ui.row():
+        ui.link(text="Sign up", target="/sign-up")
 
     def handle_login_click():
         if not input_username.value:
