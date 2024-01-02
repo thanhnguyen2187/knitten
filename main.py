@@ -1,7 +1,7 @@
 from nicegui import ui
 import global_state
 
-# import for side effect
+# import to make the pages work
 import home
 import product
 import edit_product
