@@ -2,6 +2,7 @@ import typing
 from nicegui import ui
 import global_state
 import login
+import sign_up
 import yarns
 
 
@@ -127,7 +128,9 @@ def handle_log_out():
 def footer():
     user_record = global_state.dict_["logged_in_user"]
     if user_record is None:
-        ui.link(text="Login", target=login.page)
+        with ui.row():
+            ui.link(text="Sign up", target=sign_up.page)
+            ui.link(text="Login", target=login.page)
     else:
         with ui.row():
             ui.label(text=f"Hello {user_record['full_name']}!")
