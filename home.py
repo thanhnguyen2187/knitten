@@ -5,10 +5,6 @@ import components
 import global_state
 
 
-def f():
-    ui.open(target="/sign-up")
-
-
 @ui.page("/")
 def page():
     if not global_state.dict_["logged_in_user"]:
