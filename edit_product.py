@@ -107,7 +107,6 @@ def yarn_list(product_id: str):
             )
 
 
-
 @ui.page("/edit-product/{id_}")
 def page(id_: str):
     product_record = {}

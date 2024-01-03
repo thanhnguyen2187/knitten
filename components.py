@@ -11,7 +11,7 @@ def header():
     with ui.row().classes(add="justify-between").bind_visibility_from(
         target_object=global_state.dict_,
         target_name="logged_in_user",
-        backward=lambda value: value["role"] == "owner",
+        backward=lambda value: value is not None and value["role"] == "owner",
     ):
         ui.button(text="Add new product").on(
             "click",
@@ -20,6 +20,16 @@ def header():
         ui.button(text="Edit materials").on(
             "click",
             lambda _: ui.open(target=yarns.page)
+        )
+
+    with ui.row().classes(add="justify-between").bind_visibility_from(
+        target_object=global_state.dict_,
+        target_name="logged_in_user",
+        backward=lambda value: value is not None and value["role"] == "customer",
+    ):
+        ui.button(text="View Cart").on(
+            "click",
+            lambda _: ui.open(target="/cart"),
         )
 
 
@@ -41,6 +51,17 @@ def search_bar():
     )
 
 
+def create_handle_add_to_cart(product_id: str):
+    def handle_add_to_cart(_):
+        global_state.add_to_cart(product_id=product_id)
+        ui.notify(
+            message="Added product to cart",
+            position="top-right",
+        )
+
+    return handle_add_to_cart
+
+
 @ui.refreshable
 def product_gallery():
     with ui.grid(columns=3):
@@ -52,6 +73,10 @@ def product_gallery():
                         text=product_record["name"],
                         target="/product/" + product_record["id"],
                     )
+                ui.button(text="Add To Cart").on(
+                    type="click",
+                    handler=create_handle_add_to_cart(product_id=product_record["id"]),
+                )
 
 
 def handle_change_page(

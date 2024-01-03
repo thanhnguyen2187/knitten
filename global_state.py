@@ -6,6 +6,7 @@ import persistence
 
 dict_ = {
     "logged_in_user": None,
+    "user_cart": {},
     "products": [],
     "users": [],
     "yarns": [],
@@ -93,3 +94,18 @@ def find_user(
         ):
             return user_record
     return None
+
+
+def add_to_cart(product_id: str):
+    if product_id in dict_["user_cart"]:
+        dict_["user_cart"][product_id] += 1
+    else:
+        dict_["user_cart"][product_id] = 1
+
+
+def get_cart_products():
+    products = [
+        get_product(product_id)
+        for product_id in dict_["user_cart"]
+    ]
+    return products

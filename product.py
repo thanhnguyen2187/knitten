@@ -100,7 +100,7 @@ def page(id_: str):
     with ui.row().bind_visibility_from(
         target_object=global_state.dict_,
         target_name="logged_in_user",
-        backward=lambda value: value is not None,
+        backward=lambda user: user is not None and user["role"] == "owner",
     ):
         ui.button(text="Edit Product").on(
             "click",
@@ -110,6 +110,13 @@ def page(id_: str):
             "click",
             lambda _: dialog.open(),
         )
+
+    with ui.row().bind_visibility_from(
+        target_object=global_state.dict_,
+        target_name="logged_in_user",
+        backward=lambda user: user is not None and user["role"] == "customer",
+    ):
+        ui.button(text="Add To Cart")
 
     ui.link(text="Back", target="/")
 

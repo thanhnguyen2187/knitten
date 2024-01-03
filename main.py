@@ -5,6 +5,7 @@ import global_state
 import home
 import product
 import edit_product
+import cart
 
 global_state.refresh_products()
 global_state.refresh_yarns()
