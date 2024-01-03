@@ -29,7 +29,7 @@ def page():
             global_state.set_logged_in_user(record=user_record)
             ui.open(target="/")
             # we need this since redirecting does not show the buttons as expected
-            components.admin_buttons.refresh()
+            components.header.refresh()
             components.footer.refresh()
         else:
             ui.notify("Wrong username or password", position="top-right")

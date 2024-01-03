@@ -7,7 +7,7 @@ import yarns
 
 
 @ui.refreshable
-def admin_buttons():
+def header():
     with ui.row().classes(add="justify-between").bind_visibility_from(
         target_object=global_state.dict_,
         target_name="logged_in_user",
