@@ -12,7 +12,7 @@ INSERT INTO products VALUES ('c1db516a-7e5f-4a36-9c71-305fa0cf2ba7', 'Product Na
 INSERT INTO products VALUES ('ed3d5f52-35ca-4c41-adbc-6fc26f99e248', 'Product Name 12', 'Product Description 12', 'Patterns 12', 'https://http.cat/images/207.jpg');
 INSERT INTO products VALUES ('2cf3f3c2-21db-4926-ad25-16cebca9f3bd', 'Product Name 13', 'Product Description 13', 'Patterns 13', 'https://http.cat/images/300.jpg');
 
-INSERT INTO users VALUES ('fa39c270-4a9e-47de-bcef-1d137c201e3b', 'knitten', 'Knitten Admin', 'knitten');
+INSERT INTO users VALUES ('fa39c270-4a9e-47de-bcef-1d137c201e3b', 'owner', 'knitten', 'Knitten Admin', 'knitten');
 
 INSERT INTO yarns VALUES ('5899b9d5-1d50-4530-9fb1-3943c69b07ba', 'Black milk yarn', '#000000', 20000);
 INSERT INTO yarns VALUES ('ff2ef7d7-cf36-46b9-9b55-30a1daa2c599', 'White milk yarn', '#ffffff', 20000);

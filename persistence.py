@@ -63,14 +63,15 @@ def insert_product(product_record: dict, connection=connection):
 def get_all_users(connection=connection):
     with connection:
         cursor = connection.cursor()
-        result = cursor.execute("SELECT * FROM users")
+        result = cursor.execute("SELECT id, role, username, full_name, password FROM users")
         raw_records = result.fetchall()
         records = [
             {
                 "id": raw_record[0],
-                "username": raw_record[1],
-                "full_name": raw_record[2],
-                "password": raw_record[3],
+                "role": raw_record[1],
+                "username": raw_record[2],
+                "full_name": raw_record[3],
+                "password": raw_record[4],
             }
             for raw_record in raw_records
         ]
@@ -196,9 +197,10 @@ def delete_product_yarn(id_: str, connection=connection):
 def insert_user(user_record: dict, connection=connection):
     with connection:
         connection.execute(
-            "INSERT INTO users (id, username, full_name, password) VALUES (?, ?, ?, ?)",
+            "INSERT INTO users (id, role, username, full_name, password) VALUES (?, ?, ?, ?, ?)",
             (
                 user_record["id"],
+                user_record["role"],
                 user_record["username"],
                 user_record["full_name"],
                 user_record["password"],

@@ -8,7 +8,9 @@ CREATE TABLE products (
 
 CREATE TABLE users (
     id TEXT PRIMARY KEY,
+    role TEXT NOT NULL,
     username TEXT NOT NULL,
+    email TEXT NOT NULL,
     full_name TEXT NOT NULL,
     password TEXT NOT NULL
 );
@@ -25,7 +27,11 @@ CREATE TABLE product__yarn (
     product_id TEXT NOT NULL,
     yarn_id TEXT NOT NULL,
     yarn_count INTEGER NOT NULL,
-    FOREIGN KEY (yarn_id) REFERENCES yarns (id),
+    FOREIGN KEY (yarn_id) REFERENCES yarns (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 );
 

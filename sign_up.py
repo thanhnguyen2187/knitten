@@ -10,6 +10,7 @@ import components
 def handle_submit(username: str, full_name: str, password: str):
     persistence.insert_user({
         "id": str(uuid.uuid4()),
+        "role": "customer",
         "full_name": full_name,
         "username": username,
         "password": password,

@@ -11,7 +11,7 @@ def admin_buttons():
     with ui.row().classes(add="justify-between").bind_visibility_from(
         target_object=global_state.dict_,
         target_name="logged_in_user",
-        backward=lambda value: value is not None,
+        backward=lambda value: value["role"] == "owner",
     ):
         ui.button(text="Add new product").on(
             "click",
@@ -122,6 +122,7 @@ def product_pagination():
 def handle_log_out():
     global_state.dict_["logged_in_user"] = None
     footer.refresh()
+    ui.open(target="/login")
 
 
 @ui.refreshable
