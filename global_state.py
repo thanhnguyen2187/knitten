@@ -117,3 +117,11 @@ def get_user_role():
         return dict_["logged_in_user"]["role"]
 
     return None
+
+
+def place_order():
+    persistence.insert_order(
+        cart=dict_["user_cart"],
+        user_id=dict_["logged_in_user"]["id"],
+    )
+    dict_["user_cart"] = {}

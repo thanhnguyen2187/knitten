@@ -1,4 +1,5 @@
 import sqlite3
+import uuid
 
 connection = sqlite3.connect("./knitten.db")
 
@@ -207,3 +208,25 @@ def insert_user(user_record: dict, connection=connection):
                 user_record["password"],
             )
         )
+
+
+def insert_order(cart: dict, user_id: str):
+    with connection:
+        order_id = str(uuid.uuid4())
+        connection.execute(
+            "INSERT INTO orders (id, user_id) VALUES (?, ?)",
+            (
+                order_id,
+                user_id,
+            ),
+        )
+        for product_id, product_count in cart.items():
+            connection.execute(
+                "INSERT INTO order_products (id, order_id, product_id, product_count) VALUES (?, ?, ?, ?)",
+                (
+                    str(uuid.uuid4()),
+                    order_id,
+                    product_id,
+                    product_count,
+                )
+            )

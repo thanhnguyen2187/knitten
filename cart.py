@@ -128,6 +128,21 @@ def product_list():
         total_cart_price(user_cart=user_cart, products=products, products_yarns=products_yarns)
         ui.element()
 
+    if len(user_cart) > 0:
+        ui.button(text="Place Order").on(
+            type="click",
+            handler=handle_place_order,
+        )
+
+
+def handle_place_order(_):
+    global_state.place_order()
+    ui.notify(
+        message="Your order has been placed successfully. We'll contact you soon!",
+        position="top-right",
+    )
+    product_list.refresh()
+
 
 @ui.page("/cart")
 def page():
