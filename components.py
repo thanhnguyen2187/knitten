@@ -73,10 +73,12 @@ def product_gallery():
                         text=product_record["name"],
                         target="/product/" + product_record["id"],
                     )
-                ui.button(text="Add To Cart").on(
-                    type="click",
-                    handler=create_handle_add_to_cart(product_id=product_record["id"]),
-                )
+
+                if global_state.get_user_role() == "customer":
+                    ui.button(text="Add To Cart").on(
+                        type="click",
+                        handler=create_handle_add_to_cart(product_id=product_record["id"]),
+                    )
 
 
 def handle_change_page(

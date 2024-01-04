@@ -116,7 +116,10 @@ def page(id_: str):
         target_name="logged_in_user",
         backward=lambda user: user is not None and user["role"] == "customer",
     ):
-        ui.button(text="Add To Cart")
+        ui.button(text="Add To Cart").on(
+            "click",
+            components.create_handle_add_to_cart(product_id=product["id"]),
+        )
 
     ui.link(text="Back", target="/")
 

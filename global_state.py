@@ -109,3 +109,11 @@ def get_cart_products():
         for product_id in dict_["user_cart"]
     ]
     return products
+
+
+def get_user_role():
+    if dict_["logged_in_user"]:
+        # noinspection PyUnresolvedReferences
+        return dict_["logged_in_user"]["role"]
+
+    return None
