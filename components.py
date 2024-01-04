@@ -13,11 +13,15 @@ def header():
         target_name="logged_in_user",
         backward=lambda value: value is not None and value["role"] == "owner",
     ):
-        ui.button(text="Add new product").on(
+        ui.button(text="Add New Product").on(
             "click",
             lambda _: ui.open(target="/edit-product/new"),
         )
-        ui.button(text="Edit materials").on(
+        ui.button(text="Edit Materials").on(
+            "click",
+            lambda _: ui.open(target=yarns.page)
+        )
+        ui.button(text="View Orders").on(
             "click",
             lambda _: ui.open(target=yarns.page)
         )
