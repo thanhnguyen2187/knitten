@@ -197,12 +197,13 @@ def delete_product_yarn(id_: str, connection=connection):
 def insert_user(user_record: dict, connection=connection):
     with connection:
         connection.execute(
-            "INSERT INTO users (id, role, username, full_name, password) VALUES (?, ?, ?, ?, ?)",
+            "INSERT INTO users (id, role, username, full_name, email, password) VALUES (?, ?, ?, ?, ?)",
             (
                 user_record["id"],
                 user_record["role"],
                 user_record["username"],
                 user_record["full_name"],
+                user_record["email"],
                 user_record["password"],
             )
         )

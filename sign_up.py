@@ -1,17 +1,18 @@
+import re
 import uuid
 
 from nicegui import ui
 
 import global_state
 import persistence
-import components
 
 
-def handle_submit(username: str, full_name: str, password: str):
+def handle_submit(username: str, full_name: str, email: str, password: str):
     persistence.insert_user({
         "id": str(uuid.uuid4()),
         "role": "customer",
         "full_name": full_name,
+        "email": email,
         "username": username,
         "password": password,
     })
@@ -23,6 +24,11 @@ def handle_submit(username: str, full_name: str, password: str):
         message="Inserted user successfully!",
         position="top-right",
     )
+
+
+def validate_email(text: str) -> bool:
+    match_ = re.match(r"^\S+@\S+\.\S+$", text)
+    return match_ is not None
 
 
 @ui.page("/sign-up")
@@ -40,6 +46,13 @@ def page():
         validation={
             "Blank input": lambda value: len(value) != 0,
             "Input should be less than 50 characters": lambda value: len(value) <= 50,
+        },
+    )
+    input_email = ui.input(
+        label="Email",
+        validation={
+            "Blank input": lambda value: len(value) != 0,
+            "Invalid email": lambda value: validate_email(text=value),
         },
     )
     input_password = ui.input(
@@ -67,10 +80,10 @@ def page():
             on_click=lambda e: handle_submit(
                 username=input_username.value,
                 full_name=input_full_name.value,
+                email=input_email.value,
                 password=input_password.value,
             ),
         )
-        ui.button(text="Reset")
 
     ui.link(text="Back", target="/login")
 
