@@ -1,9 +1,11 @@
 import typing
 from nicegui import ui
+
 import global_state
 import login
 import sign_up
 import yarns
+import orders
 
 
 @ui.refreshable
@@ -23,7 +25,7 @@ def header():
         )
         ui.button(text="View Orders").on(
             "click",
-            lambda _: ui.open(target=yarns.page)
+            lambda _: ui.open(target=orders.page)
         )
 
     with ui.row().classes(add="justify-between").bind_visibility_from(
