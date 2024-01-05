@@ -119,9 +119,10 @@ def get_user_role():
     return None
 
 
-def place_order():
+def place_order(user_message: str):
     persistence.insert_order(
         cart=dict_["user_cart"],
         user_id=dict_["logged_in_user"]["id"],
+        user_message=user_message,
     )
     dict_["user_cart"] = {}

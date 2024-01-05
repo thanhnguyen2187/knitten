@@ -38,6 +38,7 @@ CREATE TABLE product__yarn (
 CREATE TABLE orders (
     id TEXT PRIMARY KEY,
     user_id TEXT NOT NULL,
+    user_message TEXT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id)
         ON UPDATE CASCADE
         ON DELETE CASCADE

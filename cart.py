@@ -129,14 +129,15 @@ def product_list():
         ui.element()
 
     if len(user_cart) > 0:
+        text_area_user_message = ui.textarea(placeholder="Do you want to tell us anything?")
         ui.button(text="Place Order").on(
             type="click",
-            handler=handle_place_order,
+            handler=lambda _: handle_place_order(user_message=text_area_user_message.value),
         )
 
 
-def handle_place_order(_):
-    global_state.place_order()
+def handle_place_order(user_message: str):
+    global_state.place_order(user_message=user_message)
     ui.notify(
         message="Your order has been placed successfully. We'll contact you soon!",
         position="top-right",

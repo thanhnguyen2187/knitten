@@ -210,14 +210,15 @@ def insert_user(user_record: dict, connection=connection):
         )
 
 
-def insert_order(cart: dict, user_id: str):
+def insert_order(cart: dict, user_id: str, user_message: str):
     with connection:
         order_id = str(uuid.uuid4())
         connection.execute(
-            "INSERT INTO orders (id, user_id) VALUES (?, ?)",
+            "INSERT INTO orders (id, user_id, user_message) VALUES (?, ?, ?)",
             (
                 order_id,
                 user_id,
+                user_message,
             ),
         )
         for product_id, product_count in cart.items():
