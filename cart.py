@@ -125,11 +125,20 @@ def product_list():
         ui.element()
         ui.element()
         ui.element()
-        total_cart_price(user_cart=user_cart, products=products, products_yarns=products_yarns)
+        total_cart_price(
+            user_cart=user_cart,
+            products=products,
+            products_yarns=products_yarns,
+        )
         ui.element()
 
     if len(user_cart) > 0:
-        text_area_user_message = ui.textarea(placeholder="Do you want to tell us anything?")
+        text_area_user_message = ui.textarea(
+            placeholder=(
+                "Do you want to provide additional information "
+                "(your phone number or current address etc.)?"
+            )
+        )
         ui.button(text="Place Order").on(
             type="click",
             handler=lambda _: handle_place_order(user_message=text_area_user_message.value),
