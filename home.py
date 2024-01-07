@@ -12,8 +12,10 @@ def page():
 
     ui.label(text="Knitten 🐱 - Yarn Knitting Management").classes(add="text-xl")
 
-    components.search_bar()
-    components.header()
+    with ui.row():
+        components.search_bar()
+        components.sort_select()
+    components.header_buttons()
     components.product_gallery()
     components.product_pagination()
     components.footer()

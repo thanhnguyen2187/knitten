@@ -9,7 +9,7 @@ import orders
 
 
 @ui.refreshable
-def header():
+def header_buttons():
     with ui.row().classes(add="justify-between").bind_visibility_from(
         target_object=global_state.dict_,
         target_name="logged_in_user",
@@ -54,6 +54,28 @@ def search_bar():
     ).on(
         "change",
         lambda e: handle_change_search(),
+    )
+
+
+def handle_sort_change():
+    global_state.sort_products()
+    product_pagination.refresh()
+    product_gallery.refresh()
+
+
+def sort_select():
+    ui.select(
+        options={
+            "name_asc": "Product Name Ascending (A - Z)",
+            "name_desc": "Product Name Descending (Z - A)",
+            "price_asc": "Cheapest To Most Expensive",
+            "price_desc": "Most Expensive To Cheapest",
+        },
+        value="name_asc",
+        on_change=lambda _: handle_sort_change()
+    ).bind_value(
+        target_object=global_state.dict_,
+        target_name="products_sort_by",
     )
 
 

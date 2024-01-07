@@ -6,24 +6,25 @@ import persistence
 
 dict_ = {
     # "logged_in_user": None,
-    # "logged_in_user": {
-    #     "id": "fa39c270-4a9e-47de-bcef-1d137c201e3b",
-    #     "role": "owner",
-    #     "username": "knitten",
-    #     "email": "admin@knitten.k",
-    #     "full_name": "Knitten Admin",
-    #     "password": "knitten",
-    # },
     "logged_in_user": {
-        "id": "dabad991-9573-4835-ad9c-f8e606e6a025",
-        "role": "customer",
-        "username": "customer",
-        "email": "customer@customer.c",
-        "full_name": "Customer",
-        "password": "customer",
+        "id": "fa39c270-4a9e-47de-bcef-1d137c201e3b",
+        "role": "owner",
+        "username": "knitten",
+        "email": "admin@knitten.k",
+        "full_name": "Knitten Admin",
+        "password": "knitten",
     },
+    # "logged_in_user": {
+    #     "id": "dabad991-9573-4835-ad9c-f8e606e6a025",
+    #     "role": "customer",
+    #     "username": "customer",
+    #     "email": "customer@customer.c",
+    #     "full_name": "Customer",
+    #     "password": "customer",
+    # },
     "user_cart": {},
     "products": [],
+    "products_sort_by": "name_asc",
     "users": [],
     "yarns": [],
     "search_input": "",
@@ -43,7 +44,24 @@ def refresh_products():
         for product in products
         if dict_["search_input"].lower() in product["name"].lower()
     ]
+    for product in products:
+        product["price"] = persistence.get_product_price(id_=product["id"])
     dict_["products"] = products
+    sort_products()
+
+
+def sort_products():
+    by = dict_["products_sort_by"]
+    products = dict_["products"]
+    match by:
+        case "name_asc":
+            products.sort(key=lambda product: product["name"])
+        case "name_desc":
+            products.sort(key=lambda product: product["name"], reverse=True)
+        case "price_asc":
+            products.sort(key=lambda product: product["price"])
+        case "price_desc":
+            products.sort(key=lambda product: product["price"], reverse=True)
 
 
 def refresh_yarns():
