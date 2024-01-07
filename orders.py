@@ -76,7 +76,13 @@ def handle_sort_change():
 
 def header():
     with ui.row():
-        ui.input(label="Customer Name Or Email").classes(add="w-48")
+        ui.input(
+            label="Customer Name Or Email",
+            on_change=lambda _: orders_list.refresh(),
+        ).bind_value(
+            target_object=global_state.dict_,
+            target_name="orders_customer",
+        ).classes(add="w-48")
         ui.select(
             options={
                 "date_desc": "Newest to Oldest",

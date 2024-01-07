@@ -28,6 +28,7 @@ dict_ = {
     "orders": [],
     "orders_sort_by": "date_desc",
     "orders_state": "pending",
+    "orders_customer": "",
     "users": [],
     "yarns": [],
     "search_input": "",
@@ -178,6 +179,15 @@ def get_orders():
             for order in orders
             if order["state"] == dict_["orders_state"]
         ]
+    search_keyword = dict_["orders_customer"]
+    if search_keyword:
+        orders = [
+            order
+            for order in orders
+            if search_keyword.lower() in order["user"]["email"].lower()
+            or search_keyword.lower() in order["user"]["full_name"].lower()
+        ]
+
     return orders
 
 
