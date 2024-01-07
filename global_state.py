@@ -158,5 +158,14 @@ def place_order(user_message: str):
         cart=dict_["user_cart"],
         user_id=dict_["logged_in_user"]["id"],
         user_message=user_message,
+        state="pending",
     )
     dict_["user_cart"] = {}
+
+
+def get_orders():
+    return persistence.get_orders()
+
+
+def delete_order(id_: str):
+    persistence.delete_order(id_=id_)

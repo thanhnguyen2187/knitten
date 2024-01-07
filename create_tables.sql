@@ -39,6 +39,8 @@ CREATE TABLE orders (
     id TEXT PRIMARY KEY,
     user_id TEXT NOT NULL,
     user_message TEXT NOT NULL,
+    state TEXT NOT NULL,
+    date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id)
         ON UPDATE CASCADE
         ON DELETE CASCADE

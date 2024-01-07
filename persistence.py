@@ -210,15 +210,16 @@ def insert_user(user_record: dict, connection=connection):
         )
 
 
-def insert_order(cart: dict, user_id: str, user_message: str):
+def insert_order(cart: dict, user_id: str, user_message: str, state: str):
     with connection:
         order_id = str(uuid.uuid4())
         connection.execute(
-            "INSERT INTO orders (id, user_id, user_message) VALUES (?, ?, ?)",
+            "INSERT INTO orders (id, user_id, user_message, state) VALUES (?, ?, ?, ?)",
             (
                 order_id,
                 user_id,
                 user_message,
+                state,
             ),
         )
         for product_id, product_count in cart.items():
@@ -231,3 +232,103 @@ def insert_order(cart: dict, user_id: str, user_message: str):
                     product_count,
                 )
             )
+
+
+def get_user(id_: str):
+    with connection:
+        raw_user = connection.execute(
+            "SELECT id, role, username, email, full_name, password FROM users WHERE id = ?",
+            (id_,)
+        ).fetchone()
+        user = {
+            "id": raw_user[0],
+            "role": raw_user[1],
+            "username": raw_user[2],
+            "email": raw_user[3],
+            "full_name": raw_user[4],
+            "password": raw_user[5],
+        }
+        return user
+
+
+def get_product_price(id_: str):
+    price = 0
+    with connection:
+        product_yarns = get_product_yarns(product_id=id_)
+        for product_yarn in product_yarns:
+            price += product_yarn["yarn_price_per_unit"] * product_yarn["yarn_count"]
+
+    return price
+
+
+def get_orders():
+    with connection:
+        raw_orders = connection.execute(
+            "SELECT id, user_id, user_message, state, date_created FROM orders"
+        ).fetchall()
+        orders = [
+            {
+                "id": raw_order[0],
+                "user_id": raw_order[1],
+                "user_message": raw_order[2],
+                "state": raw_order[3],
+                "date_created": raw_order[4],
+            }
+            for raw_order in raw_orders
+        ]
+
+        for order in orders:
+            user_id = order["user_id"]
+            user = get_user(id_=user_id)
+            order["user"] = user
+
+        raw_order_products = connection.execute(
+            """
+            SELECT p.id, name, description, patterns, image_url, order_id, product_count
+            FROM products p
+            JOIN order_products op
+            ON p.id = op.product_id
+            """,
+        )
+        order_product_records = [
+            {
+                "product_id": raw_order_product[0],
+                "product_name": raw_order_product[1],
+                "product_description": raw_order_product[2],
+                "product_patterns": raw_order_product[3],
+                "product_image_url": raw_order_product[4],
+                "order_id": raw_order_product[5],
+                "product_count": raw_order_product[6],
+            }
+            for raw_order_product in raw_order_products
+        ]
+        for order_product_record in order_product_records:
+            order_product_record["product_price"] = get_product_price(id_=order_product_record["product_id"])
+
+        orders_products = {}
+        for order_product_record in order_product_records:
+            order_id = order_product_record["order_id"]
+            if order_id not in orders_products:
+                orders_products[order_id] = [order_product_record]
+            else:
+                orders_products[order_id].append(order_product_record)
+
+        for order in orders:
+            order_id = order["id"]
+            if order_id not in orders_products:
+                order["products"] = []
+            else:
+                order["products"] = orders_products[order_id]
+
+        for order in orders:
+            order_price = 0
+            for order_product in order["products"]:
+                order_price += order_product["product_price"] * order_product["product_count"]
+            order["price"] = order_price
+
+        return orders
+
+
+def delete_order(id_: str):
+    with connection:
+        connection.execute("DELETE FROM orders WHERE id = ?", (id_,))
