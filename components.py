@@ -68,8 +68,8 @@ def sort_select():
         options={
             "name_asc": "Product Name Ascending (A - Z)",
             "name_desc": "Product Name Descending (Z - A)",
-            "price_asc": "Cheapest To Most Expensive",
-            "price_desc": "Most Expensive To Cheapest",
+            "price_asc": "Cheapest to Most Expensive",
+            "price_desc": "Most Expensive to Cheapest",
         },
         value="name_asc",
         on_change=lambda _: handle_sort_change()

@@ -87,8 +87,8 @@ def header():
             options={
                 "date_desc": "Newest to Oldest",
                 "date_asc": "Oldest to Newest",
-                "price_desc": "Most Expensive to Cheapest",
                 "price_asc": "Cheapest to Most Expensive",
+                "price_desc": "Most Expensive to Cheapest",
             },
             label="Sort By",
             value="date_desc",
