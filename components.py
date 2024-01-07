@@ -72,6 +72,7 @@ def sort_select():
             "price_desc": "Most Expensive to Cheapest",
         },
         value="name_asc",
+        label="Sort By",
         on_change=lambda _: handle_sort_change()
     ).bind_value(
         target_object=global_state.dict_,
