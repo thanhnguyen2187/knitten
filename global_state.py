@@ -27,6 +27,7 @@ dict_ = {
     "products_sort_by": "name_asc",
     "orders": [],
     "orders_sort_by": "date_desc",
+    "orders_state": "pending",
     "users": [],
     "yarns": [],
     "search_input": "",
@@ -170,7 +171,14 @@ def refresh_orders():
 
 
 def get_orders():
-    return dict_["orders"]
+    orders = dict_["orders"]
+    if dict_["orders_state"]:
+        orders = [
+            order
+            for order in orders
+            if order["state"] == dict_["orders_state"]
+        ]
+    return orders
 
 
 def sort_orders():

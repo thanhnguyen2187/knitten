@@ -101,6 +101,10 @@ def header():
             label="Status",
             value="pending",
             clearable=True,
+            on_change=lambda _: orders_list.refresh()
+        ).bind_value(
+            target_object=global_state.dict_,
+            target_name="orders_state",
         )
 
 
