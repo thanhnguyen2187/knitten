@@ -332,3 +332,18 @@ def get_orders():
 def delete_order(id_: str):
     with connection:
         connection.execute("DELETE FROM orders WHERE id = ?", (id_,))
+
+
+def update_order(order: dict):
+    with connection:
+        connection.execute(
+            """
+            UPDATE orders SET
+                state = ?
+            WHERE id = ?
+            """,
+            (
+                order["state"],
+                order["id"],
+            )
+        )

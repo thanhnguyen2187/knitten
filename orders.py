@@ -8,6 +8,12 @@ def handle_delete_row(id_: str):
     orders_list.refresh()
 
 
+def handle_edit_row(order: dict):
+    global_state.update_order(order=order)
+    ui.notify(message="Updated order's state")
+    orders_list.refresh()
+
+
 def order_row(order: dict):
     user = order["user"]
     with ui.column():
@@ -54,16 +60,21 @@ def order_row(order: dict):
         )
 
     with ui.row():
-        ui.button(text="Save")
+        ui.button(text="Save").on(
+            type="click",
+            handler=lambda _: handle_edit_row(order=order)
+        )
         ui.button(text="Delete", color="deep-orange").on(
             type="click",
             handler=lambda _: handle_delete_row(id_=order["id"])
         )
 
 
-@ui.refreshable
-def orders_list():
-    orders = global_state.get_orders()
+def handle_sort_change():
+    orders_list.refresh()
+
+
+def header():
     with ui.row():
         ui.input(label="Customer Name Or Email").classes(add="w-48")
         ui.select(
@@ -75,6 +86,10 @@ def orders_list():
             },
             label="Sort By",
             value="date_desc",
+            on_change=lambda _: handle_sort_change(),
+        ).bind_value(
+            target_object=global_state.dict_,
+            target_name="orders_sort_by",
         )
         ui.select(
             options={
@@ -87,6 +102,13 @@ def orders_list():
             value="pending",
             clearable=True,
         )
+
+
+@ui.refreshable
+def orders_list():
+    global_state.refresh_orders()
+    global_state.sort_orders()
+    orders = global_state.get_orders()
     with ui.grid(columns=7):
         ui.label(text="Customer").classes(add="text-lg")
         ui.label(text="Date Created").classes(add="text-lg")
@@ -105,6 +127,6 @@ def orders_list():
 @ui.page("/orders")
 def page():
     ui.label(text="Orders").classes(add="text-xl")
-    orders = global_state.get_orders()
+    header()
     orders_list()
     ui.link(text="Back", target="/")

@@ -25,6 +25,8 @@ dict_ = {
     "user_cart": {},
     "products": [],
     "products_sort_by": "name_asc",
+    "orders": [],
+    "orders_sort_by": "date_desc",
     "users": [],
     "yarns": [],
     "search_input": "",
@@ -163,9 +165,31 @@ def place_order(user_message: str):
     dict_["user_cart"] = {}
 
 
+def refresh_orders():
+    dict_["orders"] = persistence.get_orders()
+
+
 def get_orders():
-    return persistence.get_orders()
+    return dict_["orders"]
+
+
+def sort_orders():
+    by = dict_["orders_sort_by"]
+    orders = dict_["orders"]
+    match by:
+        case "date_asc":
+            orders.sort(key=lambda order: order["date_created"], reverse=True)
+        case "date_desc":
+            orders.sort(key=lambda order: order["date_created"])
+        case "price_asc":
+            orders.sort(key=lambda order: order["price"])
+        case "price_desc":
+            orders.sort(key=lambda order: order["price"], reverse=True)
 
 
 def delete_order(id_: str):
     persistence.delete_order(id_=id_)
+
+
+def update_order(order: dict):
+    persistence.update_order(order=order)
